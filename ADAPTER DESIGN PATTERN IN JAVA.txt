@@ -1,0 +1,80 @@
+			ADAPTER DESIGN PATTERN IN JAVA
+			==============================
+
+The Adapter Design Pattern is a structural design pattern that allows incompatible interfaces to work together. It acts as a bridge between two incompatible interfaces by wrapping the existing interface with a new one that is expected by the client.
+
+#Use Case
+---------------
+When you want to use some existing code (a class or a library) that doesn't match the interface you need, the Adapter pattern allows you to "adapt" it to the required interface without modifying the existing code.
+
+#Components of the Adapter Pattern:
+------------------------------------------------------
+Target: The interface that clients expect to work with.
+Client: The code that wants to use the Target interface.
+Adaptee: The existing class that has an incompatible interface.
+Adapter: A class that implements the Target interface and translates calls to the Adaptee's interface.
+
+#Real-Life Example of Adapter in Phones: Charger Adapters
+----------------------------------------------------------------------------------------
+One of the most common real-life examples of the Adapter Design Pattern in phones is the charger adapter.
+
+#Scenario:
+---------------
+Let's create a scenario where you want to use an Android charger (which uses a USB-C cable) to charge an iPhone (which uses a Lightning cable). Since the two cables have different connectors, you'd need an adapter to make the two systems compatible.
+
+You have a new Android phone that uses USB-C charging, but you want to use your old iPhone charger (which has a Lightning cable) to charge the phone. To make it work, you need an adapter that converts the USB-C charger from Android into a Lightning cable that the iPhone can accept.
+
+-Target Interface (iPhone): The interface that the client expects (iPhone charging port).
+-Adaptee (AndroidCharger): The old charger (Android charger using USB-C).
+-Adapter (ChargerAdapter): The adapter that converts the Android charging cable to the iPhone's Lightning port.
+-Client (PhoneClient): The client that uses the adapter to charge the iPhone.
+
+#Code:
+----------
+
+// Target Interface - iPhone charging port
+public interface iPhone {
+    void chargeWithIphoneCharger();
+}
+
+// Adaptee - Android charger with USB-C port
+public class AndroidCharger {
+    public void chargeWithUSBC() {
+        System.out.println("Phone is charging with Android");
+    }
+
+// Adapter class that converts Android charger to iPhone Lightning port
+public class ChargerAdapter implements iPhone {
+    private AndroidCharger androidCharger;
+
+    public ChargerAdapter(AndroidCharger androidCharger) {
+        this.androidCharger = androidCharger;
+    }
+
+    @Override
+    public void chargeWithIphoneCharger() {
+        System.out.println("Adapter: Converting USB-C to Lightning...");
+        androidCharger.chargeWithUSBC(); // Call the Android charger's USB-C method
+
+    }
+}
+
+// Client code
+public class PhoneClient {
+    public static void main(String[] args) {
+        // Android charger with USB-C
+        AndroidCharger androidCharger = new AndroidCharger();
+        
+        // Use the adapter to convert the Android charger to Lightning for the iPhone
+        iPhone iPhone = new ChargerAdapter(androidCharger);
+        
+        // Charge the iPhone using the USB-C charger, via the adapter
+        iPhone.chargeWithIphoneCharger(); // Charging through the Adapter
+    }
+}
+
+Output:
+-----------
+Adapter: Converting USB-C to Lightning...
+Phone is charging with Android
+
